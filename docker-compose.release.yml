@@ -1,0 +1,40 @@
+version: '3.9'
+
+services:
+  zntral-mongo:
+    image: mongo:6.0
+    container_name: zntral-mongo
+    restart: always
+    ports:
+      - '27017:27017'
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=development
+      - MONGO_INITDB_ROOT_PASSWORD=xVQWNwI5vohzo6Hm
+      - MONGO_INITDB_DATABASE=d3
+    volumes:
+      - mongo_data:/data/db
+
+  zntral-mongo-seed:
+    image: semirhamid1/zntral-seeder:latest
+    container_name: zntral-mongo-seed
+    depends_on:
+      - zntral-mongo
+
+  zntral-backend:
+    image: semirhamid1/zntral-backend:latest
+    container_name: zntral-backend
+    ports:
+      - '8000:80'
+    restart: on-failure
+    depends_on:
+      - zntral-mongo
+
+  zntral-frontend:
+    image: semirhamid1/zntral-frontend:latest
+    container_name: zntral-frontend
+    ports:
+      - '3000:80'
+    restart: unless-stopped
+
+volumes:
+  mongo_data:
