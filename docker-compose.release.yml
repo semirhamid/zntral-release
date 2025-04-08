@@ -19,10 +19,6 @@ services:
     container_name: zntral-mongo-seed
     depends_on:
       - zntral-mongo
-    volumes:
-      - ./backend/scripts:/scripts
-      - ./backend/seed:/seed
-    entrypoint: ["sh", "-c", "sleep 5 && sh /scripts/mongo-import.sh"]
 
   zntral-backend:
     image: semirhamid1/zntral-backend:latest
